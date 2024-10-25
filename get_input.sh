@@ -7,7 +7,7 @@ then
 	mkdir $YEAR/day$DAY
 fi
 curl https://adventofcode.com/$YEAR/day/$DAY/input --cookie "session=$SESSION" > "$YEAR/day$DAY/in"
-if [ ! -f "$YEAR/day$DAY/solve.py"];
+if [ ! -f "$YEAR/day$DAY/solve.py" ];
 then
 	cp template.py $YEAR/day$DAY/solve.py
 fi
