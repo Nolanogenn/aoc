@@ -1,10 +1,11 @@
-data = open('test').readlines()
+data = open('in').readlines()
 data = [int(x.strip()) for x in data]
 
 ans_1= 0
 ans_2= 0
 
 data = sorted(data)
+data.insert(0,0)
 data.append(max(data)+3)
 diffs = []
 v = 0
@@ -13,19 +14,10 @@ for k in data:
     v = k
 ans_1 = diffs.count(1) * diffs.count(3)
 
-def path(curr, l):
-    if l == []:
-        print("found")
-        ans_2 += 1
-        return True
-    for i in range(min(3, len(l))):
-        if l[i] <= curr + 3:
-            c = l[i]
-            l2 = l[i+1:]
-            path(c, l2)
-        else:
-            continue
-path(data[0],data[1:])
+counts = {0:1} #one way to reach the first adapter
+for a in data[1:]:
+    counts[a] = counts.get(a-3,0) + counts.get(a-2,0) + counts.get(a-1,0)
 
+ans_2 = counts[data[-1]]
 print(f"SOLUTION FOR PART1: {ans_1}")
 print(f"SOLUTION FOR PART2: {ans_2}")

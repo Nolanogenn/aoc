@@ -11,4 +11,8 @@ if [ ! -f "$YEAR/day$DAY/solve.py" ];
 then
 	cp template.py $YEAR/day$DAY/solve.py
 fi
+if [ ! -f "$YEAR/day$DAY/solve.ex" ];
+then
+	cp template.ex $YEAR/day$DAY/solve.ex
+fi
 
