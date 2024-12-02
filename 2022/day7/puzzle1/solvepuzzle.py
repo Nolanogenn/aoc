@@ -1,7 +1,7 @@
 from pprint import pprint
 import re
 
-data = open('input.txt').readlines()
+data = open('../in').readlines()
 data = [d.replace('\n', '') for d in data]
 threshold = 100000
 
