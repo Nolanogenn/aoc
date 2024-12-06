@@ -1,4 +1,13 @@
 defmodule Solve do
+  defp rev(l) do
+    rev(l,[])
+  end
+  defp rev([head|tail], ret) do
+    rev(tail, [head|ret])
+  end
+  defp rev([], ret) do
+    ret
+  end
   defp get_combinations(n,m) do
     get_combinations(m-n,n,m,(for x <- n..m, do: [x])) 
   end
@@ -18,6 +27,7 @@ defmodule Solve do
   defp get_non_repeating([], _) do
     true
   end
+
   def compute_comb_2(poss, filename) do
     IO.inspect {"CURRENT INPUTS: ", poss}
     {:ok, contents} = File.read(filename)
@@ -28,18 +38,23 @@ defmodule Solve do
         |> Enum.with_index(0) 
         |> Enum.map(fn {k,v}->{v,k} end)
         |> Map.new
-    compute_comb_2(poss, poss, [s,s,s,s,s],[s,s,s,s,s],0)
+    compute_comb_2(poss, poss, [s,s,s,s,s],[], 0, [0,0,0,0,0], [], [], 0)
   end
-  defp compute_comb_2([p|ps], poss, [map|ss], maps,input) do
-    {:ok,v,m} = part1({[p,input], map})
-    IO.inspect v
-    compute_comb_2(ps, poss,ss,[m|maps],v)
+  def compute_comb_2(_, _, _, _, output, _, [0,1,2,3,4], _) do
+    output
   end
-  defp compute_comb_2([], poss, [], maps, input) do
-    IO.inspect {"====END LOOP, V: ", input, "===="}
-#    tmpMaps = Enum.reverse(maps)
-#    IO.inspect maps
-    compute_comb_2(poss, poss, maps, [], input)
+  def compute_comb_2([], poss, [], maps, input, indices, _, _,_) do
+    compute_comb_2(poss, poss, rev(maps), [], input, rev(indices),[],[],0)
+  end
+  def compute_comb_2([p|ps], poss, [m|ms], maps, input, [curr_i|is], indices, halted, index) do
+    instruction = m[curr_i]
+    part1({input,m,0},0,k)
+    {message, v, m, i} = part1({[p,input], m, curr_i}, curr_i, instruction)
+    cond do
+      message == :waiting ->
+        compute_comb_2(ps,[p|poss],ms,[m|maps],v, is,[i|indices], halted, index+1)
+      message == :ok -> compute_comb_2(ps, [p|poss], ms, [m|maps], v, is, [0|indices], [index|halted], index+1)
+    end
   end
   defp compute_comb(poss, filename) do
     compute_comb(poss, filename, 0)
@@ -142,7 +157,7 @@ defmodule Solve do
     [v1,v2,_] = get_inputs(m,i,params)
     x = v1 + v2
     z = m[i+3]
-    #IO.inspect {1,v1,v2,z}
+    IO.inspect {1,v1,v2,z}
     m2 = Map.replace!(m, z, x) 
     part1({input,m2,output}, i+n, m2[i+n]) 
   end
@@ -150,30 +165,34 @@ defmodule Solve do
     [v1, v2, _]= get_inputs(m,i,params)
     x = v1 * v2
     z = m[i+3]
-    #IO.inspect {2, v1,v2, z}
+    IO.inspect {2, v1,v2, z}
     m2 = Map.replace!(m, z, x) 
     part1({input,m2,output},i+n,m2[i+n]) 
   end
   def part1({[phase,input],m,output},i,3,_,n) do #set value for phase setting
     z = m[i+1]
     m2 = Map.replace!(m, z, phase) 
-    #IO.inspect {3, " phase: ", phase, z}
+    IO.inspect {3, phase, z}
     part1({input,m2,output}, i+n, m2[i+n]) 
   end
   def part1({input,m,output},i,3,_,n) do #set value for the input
-    z = m[i+1]
-    m2 = Map.replace!(m, z, input) 
-    #IO.inspect {3, "input: ", input, z}
-    part1({input,m2,output}, i+n, m2[i+n]) 
+    IO.inspect {3, input}
+    cond do
+      input == nil -> {:waiting, output, m, i}
+      true -> 
+          z = m[i+1]
+          m2 = Map.replace!(m, z, input) 
+          part1({:nil,m2,output}, i+n, m2[i+n]) 
+    end
   end
   def part1({input,m,_},i,4,params,n) do #return
     [z,_,_] = get_inputs(m,i,params)
-    #IO.inspect {params, 4,m[i+1],z}
+    IO.inspect {4,m[i+1],z}
     part1({input,m,z},i+n,m[i+n])
   end
   def part1({input,m,output},i,5,params,n) do #jump-if-true
     [v1,v2,_] = get_inputs(m,i,params)
-    #IO.inspect {5,v1,v2}
+    IO.inspect {5,v1,v2}
     case v1 do
       0 -> part1({input,m,output}, i+n, m[i+n])
       _ -> part1({input,m,output},v2,m[v2])
@@ -181,7 +200,7 @@ defmodule Solve do
   end
   def part1({input,m,output}, i,6, params,n) do #jump-if-false
     [v1,v2,_] = get_inputs(m,i,params)
-    #IO.inspect {6,v1,v2,i+n, m[i+n]}
+    IO.inspect {6,v1,v2,i+n, m[i+n]}
     case v1 do
       0 -> part1({input,m,output},v2,m[v2])
       _ -> part1({input,m,output},i+n,m[i+n])
@@ -190,7 +209,7 @@ defmodule Solve do
   def part1({input,m,output}, i,7, params,n) do #less-then
     [v1,v2,_] = get_inputs(m,i,params)
     v3 = m[i+3]
-    #IO.inspect {7,v1,v2,v3}
+    IO.inspect {7,v1,v2,v3}
     case v1 < v2 do
       true -> 
         m2 = Map.replace!(m,v3,1)
@@ -203,7 +222,7 @@ defmodule Solve do
   def part1({input,m,output}, i,8, params,n) do #equals
     [v1,v2,_] = get_inputs(m,i,params)
     v3 = m[i+3]
-    #IO.inspect {i, 8,v1,v2,v3}
+    IO.inspect {8,v1,v2,v3}
     case v1 == v2 do
       true -> 
         m2 = Map.replace!(m,v3,1)
@@ -216,7 +235,7 @@ defmodule Solve do
   def part1({_,m,output}, _,99,_,_) do
     {:ok, output, m}
   end
-  def part1({_,_,output}, _,_,_,_) do
-    {:error, output}
+  def part1({_,m,output}, _,_,_,_) do
+    {:error, output, m}
   end
 end
