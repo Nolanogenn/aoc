@@ -81,14 +81,7 @@ while i < len(program):
 ans_1= ','.join([str(x) for x in out])
 ans_2 = 0
 
-
-def get_res(a):
-    b = (a%8)^5
-    c = a//(2**b)
-    b = b^6
-    b = b^c
-    ret = b%8
-    return ret
+######## PART 2
 
 possible_programs = ['']
 for j in range(len(program)):
