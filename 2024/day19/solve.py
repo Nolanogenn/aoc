@@ -13,7 +13,7 @@ def arrangs(d):
     if len(d) == 0:
         memos[d] = 1
         return 1
-    v = int(d in towels)
+    v = d in towels
     for i in range(1, min(m_p_len+1, len(d))):
         if d[:i] not in towels:
             continue
