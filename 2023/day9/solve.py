@@ -32,7 +32,7 @@ def part2(inputfile):
         val += to_append
     return val
 if __name__ == '__main__':
-    inputfile = open('day9bigboi.txt').readlines()
+    inputfile = open('in').readlines()
     sol1 = part1(inputfile)
     print(f"Solution for part 1: {sol1}")
     sol2 = part2(inputfile)

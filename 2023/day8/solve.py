@@ -57,7 +57,7 @@ def part2(inputfile):
     return val
     
 if __name__ == '__main__':
-    inputfile = open('day8.txt').readlines()
+    inputfile = open('in').readlines()
     sol1 = part1(inputfile)
     sol2 = part2(inputfile)
     print(f"Solution for part 1: {sol1}")

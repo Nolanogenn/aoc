@@ -56,7 +56,7 @@ def part2(inputfile):
     return val_gear
 
 if __name__ == '__main__':
-    inputfile = open('day3.txt').readlines()
+    inputfile = open('in').readlines()
     sol1 = part1(inputfile)
     sol2 = part2(inputfile)
     print(f"part 1 solution: {sol1}")

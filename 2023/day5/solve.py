@@ -4,7 +4,7 @@ def parsefile(file):
     parsedfile = file.split('\n\n')
     seeds = [int(x) for x in parsedfile[0].split(':')[1].split()]
     steps = [
-        x.split(':')[1].split('\n')[1:]
+        x.strip().split(':')[1].split('\n')[1:]
         for x in parsedfile[1:]
     ]
     steps = [
@@ -55,7 +55,7 @@ def part2(inputfile):
         for step in steps:
             val = check_step_part2(val, step)
         for r in seed_ranges:
-            if val >= r[0] and val <= r[1]:
+            if r[0] <= val <= r[1]:
                 found = True
                 return current_location
         current_location += 1
@@ -63,7 +63,7 @@ def part2(inputfile):
 
 
 if __name__ == '__main__':
-    inputfile = open('day5.txt').read()
+    inputfile = open('in').read()
     sol1 = part1(inputfile)
     sol2 = part2(inputfile)
 

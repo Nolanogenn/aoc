@@ -44,7 +44,7 @@ def part2(inputfile):
     return toreturn
 
 if __name__ == '__main__':
-    inputfile = open('day4.txt').readlines()
+    inputfile = open('in').readlines()
     sol1 = part1(inputfile)
     sol2 = part2(inputfile)
     print(f"Solution to part 1: {sol1}")

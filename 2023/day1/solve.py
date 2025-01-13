@@ -1,4 +1,4 @@
-inputfile = open('./input').readlines()
+inputfile = open('./in').readlines()
 
 def part1(inputfile):
    nums = [
@@ -30,8 +30,8 @@ def part2(inputfile):
     return solution
 
 if __name__ == '__main__':
-#    sol1 = part1(inputfile)
-#    print(f"Solution for part 1: {sol1}")
+    sol1 = part1(inputfile)
+    print(f"Solution for part 1: {sol1}")
     sol2 = part2(inputfile)
     print(f"Solution for part 2: {sol2}")
 

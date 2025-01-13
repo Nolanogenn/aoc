@@ -36,7 +36,7 @@ def part2(inputfile):
     return ways_to_win
 
 if __name__ == '__main__':
-    inputfile = open('./day6.txt').readlines()
+    inputfile = open('in').readlines()
     sol1 = part1(inputfile)
     sol2 = part2(inputfile)
     print(f"Solution for part 1: {sol1}")
