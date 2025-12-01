@@ -3,10 +3,10 @@ defmodule Solve do
     {:ok, contents} = File.read(filename)
     parsed = contents
             |> String.split("\n", trim: true)
-    sol1 = part1(contents)
+    sol1 = part1(parsed)
     IO.puts "Part 1 solution: "
     IO.inspect sol1
-    sol2 = part2(contents)
+    sol2 = part2(parsed)
     IO.puts "Part 2 solution: "
     IO.inspect sol2
   end
