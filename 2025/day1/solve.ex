@@ -1,14 +1,12 @@
 defmodule Solve do
   def solve(filename) do
     {:ok, contents} = File.read(filename)
-    sol1 = contents
-        |> String.split("\n", trim: true)
-        |> part1()
+    parsed = contents
+            |> String.split("\n", trim: true)
+    sol1 = part1(contents)
     IO.puts "Part 1 solution: "
     IO.inspect sol1
-    sol2 = contents
-        |> String.split("\n", trim: true)
-        |> part2()
+    sol2 = part2(contents)
     IO.puts "Part 2 solution: "
     IO.inspect sol2
   end
