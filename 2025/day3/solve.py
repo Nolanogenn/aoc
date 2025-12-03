@@ -1,7 +1,6 @@
 from functools import reduce
 
-data = open('in').readlines()
-data = [x.strip() for x in data]
+data = [x.strip() for x in open('in').readlines()]
 
 def getMaxWithRest(l,lenInt):
     M = -99

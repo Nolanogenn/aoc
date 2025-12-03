@@ -1,4 +1,5 @@
-data = [x.strip() for x in open('in').readlines()]
+data = open('in').readlines()
+data = [x.strip() for x in data]
 
 ans_1= 0
 ans_2= 0
