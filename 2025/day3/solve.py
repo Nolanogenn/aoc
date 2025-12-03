@@ -5,7 +5,6 @@ data = [x.strip() for x in data]
 
 def getMaxWithRest(l,lenInt):
     M = -99
-    maxI = -99
     for i, elem in enumerate(l):
         if len(l)-i < lenInt:
             break
@@ -31,7 +30,7 @@ ans_2= 0
 
 for line in data:
     parsed = parseInput(line)
-    ds = reduce(lambda x, y: x*10+y, getMaxInt(parsed))
+    ds = reduce(lambda x,y: x*10+y, getMaxInt(parsed))
     ans_1 += ds
     ds2 = reduce(lambda x,y: x*10+y, getMaxInt(parsed,12))
     ans_2 += ds2
