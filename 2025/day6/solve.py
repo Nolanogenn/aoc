@@ -26,13 +26,11 @@ for l in data[:-1]:
     k = []
     j =[]
     for i,x in enumerate(l):
-        if x not in [' ','\n']:
+        if x.isdigit():
             j.append((i,x))
         elif j:
             k.append(j)
             j = []
-    if j:
-        k.append(j)
     toMap.append(k)
 
 for i in range(len(toMap[0])):
