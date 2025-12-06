@@ -1,10 +1,6 @@
 data = [x for x in open('in').readlines()]
 
 problems = [x.split() for x in data[:-1]]
-
-ints = []
-for p in range(len(problems[0])):
-    ints.append([x[p] for x in problems])
 ops = data[-1].split()
 
 def apply(op, l):
@@ -20,8 +16,9 @@ def apply(op, l):
 ans_1= 0
 ans_2= 0
 
-for j in range(len(ints)):
-    r = apply(ops[j], ints[j])
+for p in range(len(problems[0])):
+    i = [x[p] for x in problems]
+    r = apply(ops[p], i)
     ans_1 += r
 
 toMap = []
