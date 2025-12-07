@@ -36,18 +36,17 @@ for splitter in splitters:
     toAdd = set()
     for elem in toCheck:
         hits = [x for x in splitter if x[1] == elem[1]]
+        if hits:
+            toRem.append(elem)
         for h in hits:
             l = (h[0], elem[1]-1)
             r = (h[0], elem[1]+1)
             if l not in rays:
-                rays[l] = rays[(elem[0], elem[1])]
-            else:
-                rays[l] += rays[(elem[0], elem[1])]
+                rays[l] = 0
+            rays[l] += rays[(elem[0], elem[1])]
             if r not in rays:
-                rays[r] = rays[(elem[0], elem[1])]
-            else:
-                rays[r] += rays[(elem[0], elem[1])]
-            toRem.append(elem)
+                rays[r] = 0
+            rays[r] += rays[(elem[0], elem[1])]
             toAdd.add(r)
             toAdd.add(l)
     toCheck = set([x for x in toCheck if x not in toRem])
