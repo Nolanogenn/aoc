@@ -12,21 +12,24 @@ def findParent(p, sets):
         return p
     return findParent(sets[p], sets)
 
+def join(p1,p2,parents):
+    p1 = findParent(p1,parents)
+    p2 = findParent(p2,parents)
+    if p1 != p2:
+        parents[p2] = p1
+        return True
+
 data = [x.strip().split(',') for x in open('in').readlines()]
 points = [tuple(int(j) for j in i) for i in data]
 parents = {p:p for p in points}
 p_comb = itertools.combinations(points,2)
 dists = [(x[0],x[1],dist(x[0],x[1])) for x in p_comb]
-dists = sorted(dists, key= lambda x: -x[2])
+dists = sorted(dists, key= lambda x: x[2])
 
-connected = 0
-while connected < 1000:
-    d = dists.pop()
-    p1 = findParent(d[0],parents)
-    p2 = findParent(d[1],parents)
-    if p1 != p2:
-        parents[p2] = p1
-    connected += 1
+for c in range(1000):
+    p1, p2,_ = dists[c]
+    join(p1, p2, parents)
+
 groups = [findParent(x,parents) for x in parents]
 groupsUnique = set(groups)
 ls = sorted([groups.count(x) for x in groupsUnique], reverse=True)
@@ -35,21 +38,16 @@ for l in ls[:3]:
     ans_1 = ans_1 * l
 print(f"SOLUTION FOR PART1: {ans_1}")
 
-points = [tuple(int(j) for j in i) for i in data]
+c = -1
 parents = {p:p for p in points}
-p_comb = itertools.combinations(points,2)
-dists = [(x[0],x[1],dist(x[0],x[1])) for x in p_comb]
-dists = sorted(dists, key= lambda x: -x[2])
-groups = [findParent(x,parents) for x in parents]
-groupsUnique = set(groups)
-while len(groupsUnique) > 1:
-    d = dists.pop()
-    p1 = findParent(d[0],parents)
-    p2 = findParent(d[1],parents)
-    if p1 != p2:
-        parents[p2] = p1
-    groups = [findParent(x,parents) for x in parents]
-    groupsUnique = set(groups)
-ans_2 = d[0][0] * d[1][0]
+l = len(parents.keys())
+while l > 1:
+    c += 1
+    p1,p2, _ = dists[c]
+    x = join(p1, p2, parents)
+    if x:
+        l = l-1
+
+ans_2 = dists[c][0][0] * dists[c][1][0]
 
 print(f"SOLUTION FOR PART2: {ans_2}")
