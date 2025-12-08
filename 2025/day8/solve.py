@@ -1,3 +1,4 @@
+import heapq
 import itertools
 import math
 
@@ -23,11 +24,12 @@ data = [x.strip().split(',') for x in open('in').readlines()]
 points = [tuple(int(j) for j in i) for i in data]
 parents = {p:p for p in points}
 p_comb = itertools.combinations(points,2)
-dists = [(x[0],x[1],dist(x[0],x[1])) for x in p_comb]
-dists = sorted(dists, key= lambda x: x[2])
+dists = [(dist(x[0], x[1]),x[0],x[1]) for x in p_comb]
+heapq.heapify(dists)
 
-for c in range(1000):
-    p1, p2,_ = dists[c]
+d = heapq.nsmallest(1000,dists)
+for e in d:
+    _,p1,p2 = e
     join(p1, p2, parents)
 
 groups = [findParent(x,parents) for x in parents]
@@ -38,16 +40,14 @@ for l in ls[:3]:
     ans_1 = ans_1 * l
 print(f"SOLUTION FOR PART1: {ans_1}")
 
-c = -1
 parents = {p:p for p in points}
 l = len(parents.keys())
 while l > 1:
-    c += 1
-    p1,p2, _ = dists[c]
+    _,p1,p2 = heapq.heappop(dists)
     x = join(p1, p2, parents)
     if x:
         l = l-1
 
-ans_2 = dists[c][0][0] * dists[c][1][0]
+ans_2 = p1[0] * p2[0]
 
 print(f"SOLUTION FOR PART2: {ans_2}")
