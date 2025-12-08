@@ -1,6 +1,5 @@
 import heapq
 import itertools
-import math
 
 def dist(x,y):
     n0 = abs(x[0]-y[0])**2
