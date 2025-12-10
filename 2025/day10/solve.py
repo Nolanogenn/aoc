@@ -6,49 +6,45 @@ def parseLine(line):
     voltage = [int(x) for x in line[-1][1:-1].split(',')]
     return (target,buttons,voltage)
 
+cache = {}
 def apply(state, button):
-    s2 = []
-    for i, n in enumerate(state):
-        if i not in button:
-            s2.append(n)
+    if (state,button) in cache:
+        return cache[(state,button)]
+    s2 = list(state)
+    for i in button:
+        if s2[i] == 1:
+            s2[i] = 0
         else:
-            if n == 1:
-                s2.append(0)
-            else:
-                s2.append(1)
+            s2[i] = 1
     s2 = tuple(s2)
+    cache[(state,button)] = s2
     return s2
 
 data = [parseLine(x.strip().split()) for x in open('in').readlines()]
 ans_1= 0
 for x in tqdm(data):
-    m = 99999999999999
+    visited = {}
     target = x[0]
+    starting = tuple([0 for _ in target])
     buttons = x[1]
-    starting = tuple([0 for _ in x[0]])
-    visited = set()
-    query = [
-            (apply(starting, button),1,str(i))
-            for i, button in enumerate(buttons)
-            ]
+    query = [(apply(starting,b),b,1) for b in buttons]
     while query:
-        n,step,currButtons = query[0]
-        query = query[1:]
-        if step >= m:
-            break
-        visited.add(currButtons)
-        if n == target:
-            if step < m:
-                m = step
-        else:
+        curr, lastB, steps = query.pop()
+        goNext = False
+        if curr not in visited:
+            visited[curr] = steps
+            goNext = True
+        elif steps < visited[curr]:
+            visited[curr] = steps
+            if curr != target:
+                goNext = True
+        if goNext:
             ns = [
-                    (apply(n, button),step+1,currButtons+f";{str(i)}")
-                    for i, button in enumerate(buttons)
-                    if str(i) not in currButtons.split(';')
-                    and currButtons+f";{str(i)}"  not in visited
+                    (apply(curr, b), b,steps+1) for b in buttons if b != lastB
                     ]
             query.extend(ns)
-    ans_1 += m
+    ans_1 += visited[target]
+
 
 
 ans_2= 0
