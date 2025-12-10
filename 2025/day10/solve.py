@@ -31,29 +31,29 @@ def buttonsToMatrix(buttons,target):
 
 data = [parseLine(x.strip().split()) for x in open('in').readlines()]
 ans_1= 0
-#for x in tqdm(data):
-#    visited = {}
-#    target = x[0]
-#    starting = tuple([0 for _ in target])
-#    buttons = x[1]
-#    query = [(apply(starting,b),[b],1) for b in buttons]
-#    while query:
-#        curr, pressed, steps = query.pop()
-#        goNext = False
-#        if curr not in visited:
-#            visited[curr] = steps
-#            goNext = True
-#        elif steps < visited[curr]:
-#            visited[curr] = steps
-#            if curr != target:
-#                goNext = True
-#        if goNext:
-#            ns = [
-#                    (apply(curr, b),b,steps+1)
-#                    for b in buttons if b not in pressed
-#                    ]
-#            query.extend(ns)
-#    ans_1 += visited[target]
+for x in tqdm(data):
+    visited = {}
+    target = x[0]
+    starting = tuple([0 for _ in target])
+    buttons = x[1]
+    query = [(apply(starting,b),[b],1) for b in buttons]
+    while query:
+        curr, pressed, steps = query.pop()
+        goNext = False
+        if curr not in visited:
+            visited[curr] = steps
+            goNext = True
+        elif steps < visited[curr]:
+            visited[curr] = steps
+            if curr != target:
+                goNext = True
+        if goNext:
+            ns = [
+                    (apply(curr, b),b,steps+1)
+                    for b in buttons if b not in pressed
+                    ]
+            query.extend(ns)
+    ans_1 += visited[target]
 
 ans_2= 0
 for x in tqdm(data):
